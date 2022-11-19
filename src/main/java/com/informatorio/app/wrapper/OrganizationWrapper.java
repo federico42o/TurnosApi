@@ -14,6 +14,8 @@ public class OrganizationWrapper {
 		entity.setName(dto.getName());
 		entity.setCuit(dto.getCuit());
 		entity.setMail(dto.getMail());
+		entity.setAddress(dto.getAddress());
+		entity.setPhone(dto.getPhone());
 		
 		return entity;
 	}
@@ -25,7 +27,9 @@ public class OrganizationWrapper {
 		dto.setName(entity.getName());
 		dto.setCuit(entity.getCuit());
 		dto.setMail(entity.getMail());
-		
+		dto.setAddress(entity.getAddress());
+		dto.setPhone(entity.getPhone());
+
 		return dto;
 	}
 

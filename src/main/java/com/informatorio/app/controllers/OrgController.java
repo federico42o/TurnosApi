@@ -50,7 +50,7 @@ public class OrgController {
 	}
 	
 	@GetMapping("/actives/{cuit}")
-	public ResponseEntity<HashMap<String, Object>> getByCuit(@PathVariable(name = "cuit") String cuit ) throws NotFoundException{
+	public ResponseEntity<HashMap<String, Object>> getByCuit(@PathVariable String cuit ) throws NotFoundException{
 		HashMap<String, Object> response = new HashMap<>();
 		OrganizationDto org = orgService.findByCuit(cuit);
 		response.put("Org", org);
@@ -59,7 +59,7 @@ public class OrgController {
 		
 	}
 	@GetMapping("/actives/name/{name}")
-	public ResponseEntity<HashMap<String, Object>> getByName(@PathVariable(name = "name") String name ) throws NotFoundException {
+	public ResponseEntity<HashMap<String, Object>> getByName(@PathVariable String name ) throws NotFoundException {
 		HashMap<String, Object> response = new HashMap<>();
 		OrganizationDto org = orgService.findByName(name);
 		response.put("Org", org);
@@ -71,11 +71,11 @@ public class OrgController {
 	
 	
 	@PostMapping("/new")
-	public ResponseEntity<HashMap<String, Object>> createOrg(@RequestBody @Valid Organization org) throws AlreadyExistException{
+	public ResponseEntity<HashMap<String, Object>> createOrg(@RequestBody @Valid OrganizationDto orgDto) throws AlreadyExistException{
 		HashMap<String, Object> response = new HashMap<>();
-		Organization newOrg = orgService.save(org);
+		OrganizationDto newOrg = orgService.create(orgDto);
 		response.put("org", newOrg);
-
+			
 		return new ResponseEntity<HashMap<String,Object>>(response,HttpStatus.CREATED);
 	}
 

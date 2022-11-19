@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
+/*
 @Entity(name = "appointments")
 public class Appointment implements Serializable{
 
@@ -116,3 +116,4 @@ public class Appointment implements Serializable{
 	
     
 }
+*/

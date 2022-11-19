@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-@Entity(name = "phones")
+//@Entity(name = "phones")
 public class Phone implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,7 @@ public class Phone implements Serializable{
 	
 	private String number;
 	
-	@ManyToOne
+
 	private Organization organization;
 
 	public Phone() {

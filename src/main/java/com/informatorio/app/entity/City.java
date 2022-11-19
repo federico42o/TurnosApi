@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-@Entity
+/*
 public class City implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -62,3 +62,4 @@ public class City implements Serializable{
 	
 	
 }
+*/

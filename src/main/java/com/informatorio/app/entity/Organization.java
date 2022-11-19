@@ -5,6 +5,7 @@ import java.security.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,9 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -34,21 +38,18 @@ public class Organization implements Serializable{
 	private Long id;
 	
 	private String name;
+	
 	@Column(unique = true)
 	private String cuit;
 	
 	@Column(name ="is_active")
-	private Boolean isActive = true;
+	private Boolean isActive;
 	
 	
-	@OneToMany(mappedBy = "organization")
-	@JsonIgnore
-	private List<Address> addresses;
+	private String address;
 	
 	
-	@OneToMany(mappedBy = "organization")
-	@JsonIgnore
-	private List<Phone> phones;
+	private String phone;
 	
 	/*private String phone;*/
 	@Column(unique = true)
@@ -60,8 +61,6 @@ public class Organization implements Serializable{
 	@JsonFormat(pattern = "yyyy-MM-dd")
     private Date createAt;
 	
-	
-	
 	private String password;
 	
 	
@@ -69,103 +68,82 @@ public class Organization implements Serializable{
 	public void prePersist(){
 		String pw = RandomPasswordGenerator.generate();
 	    this.password = pw;
+	    this.isActive = true;
+	    
 	}
 	public Organization() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-	public Organization(Long id, String name, String cuit, Boolean isActive, List<Address> addresses,
-			List<Phone> phones, String mail, Date createAt, String password) {
+	public Organization(Long id, String name, String cuit, Boolean isActive, String address, String phone, String mail,
+			Date createAt, String password) {
 		this.id = id;
 		this.name = name;
 		this.cuit = cuit;
 		this.isActive = isActive;
-		this.addresses = addresses;
-		this.phones = phones;
+		this.address = address;
+		this.phone = phone;
 		this.mail = mail;
 		this.createAt = createAt;
 		this.password = password;
 	}
-
 	public Long getId() {
 		return id;
 	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public String getCuit() {
 		return cuit;
 	}
-
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
 	}
-
 	public Boolean getIsActive() {
 		return isActive;
 	}
-
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
 	}
-
-	public List<Address> getAddresses() {
-		return addresses;
+	public String getAddress() {
+		return address;
 	}
-
-	public void setAddresses(List<Address> addresses) {
-		this.addresses = addresses;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-
-	public List<Phone> getPhones() {
-		return phones;
+	public String getPhone() {
+		return phone;
 	}
-
-	public void setPhones(List<Phone> phones) {
-		this.phones = phones;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
-
 	public String getMail() {
 		return mail;
 	}
-
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
 	public Date getCreateAt() {
 		return createAt;
 	}
-
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	
 
-	
-
-	
-	
 	
 	
 

@@ -47,12 +47,13 @@ public class OrgServiceImpl implements IOrgService {
 	}
 
 	@Override
-	public Organization save(Organization org) throws AlreadyExistException {
-		if (orgDao.findByMail(org.getMail()) != null || orgDao.findByCuit(org.getCuit()) != null) {
+	public OrganizationDto create(OrganizationDto orgDto) throws AlreadyExistException {
+		if (orgDao.findByMail(orgDto.getMail()) != null || orgDao.findByCuit(orgDto.getCuit()) != null) {
 			throw new AlreadyExistException("Organization already exist");
 		}
-
-		return orgDao.save(org);
+		 Organization org = OrganizationWrapper.dtoToEntity(orgDto);
+		  
+		return OrganizationWrapper.entityToDto(orgDao.save(org));
 	}
 
 	@Override
@@ -74,5 +75,6 @@ public class OrgServiceImpl implements IOrgService {
 
 		return OrganizationWrapper.entityToDto(org);
 	}
+
 
 }

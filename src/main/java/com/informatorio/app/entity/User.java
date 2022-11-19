@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+
+import com.informatorio.app.utils.RandomPasswordGenerator;
 
 @Entity(name = "users")
 public class User implements Serializable{
@@ -20,11 +23,15 @@ public class User implements Serializable{
 	@Column(name ="last_name")
 	private String lastName;
 	@Column(name ="is_active")
-	private Boolean isActive;
+	private Boolean isActive = true;
 	private String password;
 	
 	
-	
+	@PrePersist
+	public void prePersist(){
+		String pw = RandomPasswordGenerator.generate();
+	    this.password = pw;
+	}
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
