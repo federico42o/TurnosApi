@@ -1,7 +1,7 @@
 package com.informatorio.app.entity;
 
 import java.io.Serializable;
-import java.security.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,18 +13,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.informatorio.app.utils.RandomPasswordGenerator;
 
 
@@ -63,7 +58,9 @@ public class Organization implements Serializable{
 	
 	private String password;
 	
-	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Event> events = new ArrayList<>();
+
 	@PrePersist
 	public void prePersist(){
 		String pw = RandomPasswordGenerator.generate();
@@ -75,18 +72,8 @@ public class Organization implements Serializable{
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Organization(Long id, String name, String cuit, Boolean isActive, String address, String phone, String mail,
-			Date createAt, String password) {
-		this.id = id;
-		this.name = name;
-		this.cuit = cuit;
-		this.isActive = isActive;
-		this.address = address;
-		this.phone = phone;
-		this.mail = mail;
-		this.createAt = createAt;
-		this.password = password;
-	}
+
+	
 	public Long getId() {
 		return id;
 	}

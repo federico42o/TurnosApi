@@ -31,6 +31,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.InvalidPasswordException;
 
 
 @RestControllerAdvice
@@ -77,5 +78,16 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 		body.put("errors", ex.getMessage());
 
 		    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+		  }
+	
+	@ExceptionHandler(InvalidPasswordException.class)
+	public ResponseEntity<Object> handleUserAlreadyExistException(
+		InvalidPasswordException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("timestamp", formattedDate);
+		body.put("status",HttpStatus.UNAUTHORIZED.value());
+		body.put("errors", ex.getMessage());
+
+		    return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
 		  }
 }
