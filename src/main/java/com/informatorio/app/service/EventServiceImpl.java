@@ -6,15 +6,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
-import com.informatorio.app.dto.EventDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.informatorio.app.dto.request.EventDto;
+import com.informatorio.app.dto.response.EventResponseDto;
+import com.informatorio.app.entity.Appointment;
 import com.informatorio.app.entity.Event;
 import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.BadRequestException;
 import com.informatorio.app.exception.InvalidPasswordException;
 import com.informatorio.app.repository.IEventDao;
 import com.informatorio.app.repository.IOrgDao;
 import com.informatorio.app.wrapper.EventWrapper;
+import com.informatorio.app.wrapper.OrganizationWrapper;
 
 @Service
 public class EventServiceImpl implements IEventService {
@@ -27,33 +33,33 @@ public class EventServiceImpl implements IEventService {
 	IEventDao eventDao;
 
 	@Override
-	public EventDto createEvent(EventDto eventDto) throws AlreadyExistException, InvalidPasswordException {
-		if (!eventDao.findByLocation(eventDto.getLocation()).isEmpty()
-				&& !eventDao.findByEventDate(eventDto.getEventDate()).isEmpty()
-				&& !eventDao.findByEventHour(eventDto.getEventHour()).isEmpty()) {
-			throw new AlreadyExistException("This event already exist");
-		}
+	public EventResponseDto createEvent(EventDto eventDto)
+			throws AlreadyExistException, InvalidPasswordException, BadRequestException {
 
 		Organization org = orgDao.findById(eventDto.getOrganizationId()).orElse(new Organization());
 
-		log.info(eventDto.getPassword());
-		log.info(org.getPassword());
+		if (!eventDao.findByIsActiveAndByNameAndOrg(eventDto.getOrganizationId(), eventDto.getName()).isEmpty()) {
+			throw new AlreadyExistException("This event already exist");
+		}
+
 		if (eventDto.getPassword().trim().equals(org.getPassword().trim())) {
 			Event event = EventWrapper.dtoToEntity(eventDto);
 			event.setOrganization(org);
-
-			return EventWrapper.entityToDto(eventDao.save(event));
+			event.setEventDate(eventDto.getEventDate());
+			EventDto dto =  EventWrapper.entityToDto(eventDao.save(event));
+			return EventWrapper.dtoToResponse(dto);
 		} else {
 
-			throw new InvalidPasswordException("Invalid Password! Try again");
+			throw new InvalidPasswordException("Invalid Password");
 		}
 
 	}
 
 	@Override
 	public List<Event> findByAll() {
+
 		List<Event> event = eventDao.findAll();
-		// TODO Auto-generated method stub
+
 
 		return event;
 	}

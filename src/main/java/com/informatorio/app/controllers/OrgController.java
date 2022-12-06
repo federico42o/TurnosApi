@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.informatorio.app.dto.OrganizationDto;
+import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
 import com.informatorio.app.service.IOrgService;
 
@@ -25,11 +26,11 @@ public class OrgController {
 	@GetMapping
 	public ResponseEntity<HashMap<String, Object>> all() {
 		HashMap<String, Object> response = new HashMap<>();
-		List<OrganizationDto> all = orgService.findByAll();
+		List<Organization> all = orgService.findByAll();
 
 		response.put("organizaciones", all);
 
-		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		return new  ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
 
 	}
 
@@ -70,12 +71,22 @@ public class OrgController {
 		// response.put("org", newOrg);
 
 		// return new
-		// ResponseEntity<HashMap<String,Object>>(response,HttpStatus.CREATED);
+		//return new ResponseEntity<HashMap<String,Object>>(response,HttpStatus.CREATED);
 		return ResponseEntity.ok().body(newOrg);
 	}
 
+	@PutMapping("edit/{id}")
+	public ResponseEntity<OrganizationDto> updateOrg(@PathVariable Long id, @RequestBody @Valid OrganizationDto orgDto)
+			throws NotFoundException, AlreadyExistException {
+
+		OrganizationDto updateOrg = orgService.updateOrg(id, orgDto);
+
+		return ResponseEntity.ok().body(updateOrg);
+
+	}
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException {
 
 		orgService.delete(id);
 

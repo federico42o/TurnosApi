@@ -11,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.informatorio.app.dto.EventDto;
+import com.informatorio.app.dto.request.EventDto;
+import com.informatorio.app.dto.response.EventResponseDto;
 import com.informatorio.app.entity.Event;
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.BadRequestException;
 import com.informatorio.app.exception.InvalidPasswordException;
 import com.informatorio.app.service.IEventService;
 import com.informatorio.app.service.IOrgService;
@@ -40,11 +42,11 @@ public class EventController {
 
 	@PostMapping("/new")
 	public ResponseEntity<HashMap<String, Object>> createEvent(@RequestBody @Valid EventDto eventDto)
-			throws AlreadyExistException, InvalidPasswordException, NotFoundException {
+			throws AlreadyExistException, InvalidPasswordException, NotFoundException, BadRequestException {
 
 		HashMap<String, Object> response = new HashMap<>();
 
-		EventDto newEvent = eventService.createEvent(eventDto);
+		EventResponseDto newEvent = eventService.createEvent(eventDto);
 
 		response.put("event", newEvent);
 

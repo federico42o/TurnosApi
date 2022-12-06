@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,7 +21,8 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.informatorio.app.utils.RandomPasswordGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.informatorio.app.utils.RandomStringGenerator;
 
 
 @Entity(name = "organizations")
@@ -40,30 +42,31 @@ public class Organization implements Serializable{
 	@Column(name ="is_active")
 	private Boolean isActive;
 	
-	
+	//normalizar
 	private String address;
 	
-	
+	//normalizar
 	private String phone;
 	
 	/*private String phone;*/
 	@Column(unique = true)
 	private String mail;
 	
-	@CreationTimestamp
 	@Column(name ="created_at")
     @Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
-    private Date createAt;
+	@CreationTimestamp
+    private Date createdAt;
 	
 	private String password;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Event> events = new ArrayList<>();
+	@JsonIgnore
+	private Set<Event> events;
 
 	@PrePersist
 	public void prePersist(){
-		String pw = RandomPasswordGenerator.generate();
+		String pw = RandomStringGenerator.generate();
 	    this.password = pw;
 	    this.isActive = true;
 	    
@@ -116,17 +119,24 @@ public class Organization implements Serializable{
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-	public Date getCreateAt() {
-		return createAt;
-	}
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
-	}
+
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public Date getCreatedAt() {
+		return createdAt;
+	}
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	public Set<Event> getEvents() {
+		return events;
+	}
+	public void setEvents(Set<Event> events) {
+		this.events = events;
 	}
 
 	

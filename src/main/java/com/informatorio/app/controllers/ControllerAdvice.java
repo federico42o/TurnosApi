@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,12 +25,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.HttpClientErrorException.NotFound;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.BadRequestException;
 import com.informatorio.app.exception.InvalidPasswordException;
 
 
@@ -80,6 +82,9 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 		    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 		  }
 	
+	
+	
+	
 	@ExceptionHandler(InvalidPasswordException.class)
 	public ResponseEntity<Object> handleUserAlreadyExistException(
 		InvalidPasswordException ex) {
@@ -90,4 +95,15 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
 
 		    return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
 		  }
+	
+	@ExceptionHandler(BadRequestException.class)	
+	public ResponseEntity<Object> handleBadRequest(
+			BadRequestException ex) {
+			Map<String, Object> body = new HashMap<>();
+			body.put("timestamp", formattedDate);
+			body.put("status",HttpStatus.BAD_REQUEST.value());
+			body.put("errors", ex.getMessage());
+
+			    return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+			  }
 }

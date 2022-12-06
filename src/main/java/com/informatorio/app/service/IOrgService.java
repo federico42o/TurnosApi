@@ -14,13 +14,13 @@ public interface IOrgService {
 
 	OrganizationDto findByName(String name) throws NotFoundException;
 
-	List<OrganizationDto> findByAll();
+	List<Organization> findByAll();
 
 	List<OrganizationDto> findByIsActiveTrue();
 
 	OrganizationDto create(OrganizationDto org) throws AlreadyExistException;
 
 	Organization findById(Long id) throws NotFoundException;
-
-	void delete(Long id);
+	OrganizationDto updateOrg(Long id, OrganizationDto orgDto) throws NotFoundException, AlreadyExistException;
+	void delete(Long id) throws NotFoundException;
 }

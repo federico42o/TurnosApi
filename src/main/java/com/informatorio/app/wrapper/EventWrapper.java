@@ -1,8 +1,9 @@
 package com.informatorio.app.wrapper;
 
-import com.informatorio.app.dto.EventDto;
-
+import com.informatorio.app.dto.request.EventDto;
+import com.informatorio.app.dto.response.EventResponseDto;
 import com.informatorio.app.entity.Event;
+
 public class EventWrapper {
 
 	public static Event dtoToEntity(EventDto dto) {
@@ -12,9 +13,9 @@ public class EventWrapper {
 		Event entity = new Event();
 		entity.setName(dto.getName());
 		entity.setLocation(dto.getLocation());
-		entity.setEventType(dto.getEventType());
+		entity.setIsUnique(dto.getIsUnique());
 		entity.setEventDate(dto.getEventDate());
-		entity.setEventHour(dto.getEventHour());
+		
 
 		return entity;
 	}
@@ -26,13 +27,29 @@ public class EventWrapper {
 		EventDto dto = new EventDto();
 		dto.setName(entity.getName());
 		dto.setLocation(entity.getLocation());
+		dto.setIsUnique(entity.getIsUnique());
 		dto.setEventDate(entity.getEventDate());
-		dto.setEventHour(entity.getEventHour());
-		dto.setEventType(entity.getEventType());
-		dto.setOrganization(entity.getOrganization().getId());
+		dto.setOrganizationId(entity.getOrganization().getId());
+		
 
 		return dto;
 
 	}
+	public static EventResponseDto dtoToResponse(EventDto dto) {
+		if (dto == null)
+			return new EventResponseDto();
 
+		EventResponseDto response = new EventResponseDto();
+		response.setName(dto.getName());
+		response.setLocation(dto.getLocation());
+		response.setEventDate(dto.getEventDate());
+		response.setOrganizationId(dto.getOrganizationId());
+		
+
+		return response;
+
+	}
+	
+	
+	
 }

@@ -1,5 +1,8 @@
 package com.informatorio.app.service;
 
-public interface IAppointmentService {
+import com.informatorio.app.entity.Appointment;
 
+public interface IAppointmentService {
+	
+	Appointment create(Appointment appointment);
 }

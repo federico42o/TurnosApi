@@ -29,6 +29,7 @@ public class OrganizationWrapper {
 		dto.setMail(entity.getMail());
 		dto.setAddress(entity.getAddress());
 		dto.setPhone(entity.getPhone());
+		dto.setPassword(entity.getPassword());
 
 		return dto;
 	}

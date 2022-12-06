@@ -1,8 +1,14 @@
 package com.informatorio.app.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+
+import com.informatorio.app.entity.Event;
 
 public class OrganizationDto {
 
@@ -21,19 +27,17 @@ public class OrganizationDto {
 
 	@Pattern(regexp = "\\b\\d+\\b", message = "Thae phone number must be in a valid format")
 	private String phone;
+	
+
+	private String password;
+	
 
 	public OrganizationDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public OrganizationDto(String name, String cuit, String mail, String address, String phone) {
-		this.name = name;
-		this.cuit = cuit;
-		this.mail = mail;
-		this.address = address;
-		this.phone = phone;
-	}
+
 
 	public String getName() {
 		return name;
@@ -74,5 +78,16 @@ public class OrganizationDto {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+
 
 }
