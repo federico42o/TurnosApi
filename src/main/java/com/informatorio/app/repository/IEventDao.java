@@ -24,6 +24,7 @@ public interface IEventDao extends JpaRepository<Event, Long>{
 	
 	@Query(value="SELECT * 	from events u WHERE u.is_active = true and u.organization_id = ?1 and u.name = ?2", nativeQuery = true)
 	List<Event> findByIsActiveAndByNameAndOrg(Long id, String name);
+	
 
 
 	EventDto save(EventDto entityToDto);

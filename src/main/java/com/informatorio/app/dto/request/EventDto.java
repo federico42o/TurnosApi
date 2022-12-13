@@ -15,7 +15,12 @@ public class EventDto {
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date eventDate;
-
+	
+	
+	@DateTimeFormat(style = "hh:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm",timezone = "America/Argentina/Buenos_Aires")
+	private Date eventHour;
+	
 	@NotBlank(message = "The password is required")
 	private String password;
 
@@ -75,4 +80,13 @@ public class EventDto {
 		this.password = password;
 	}
 
+	public Date getEventHour() {
+		return eventHour;
+	}
+
+	public void setEventHour(Date eventHour) {
+		this.eventHour = eventHour;
+	}
+	
+	
 }

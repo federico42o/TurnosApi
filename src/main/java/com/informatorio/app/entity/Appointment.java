@@ -3,15 +3,15 @@ package com.informatorio.app.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,20 +51,22 @@ public class Appointment implements Serializable{
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date eventDate;
 
-//	@Column(name = "event_hour")
-//	@Temporal(TemporalType.TIME)
-//	private Date eventHour;
-	
-	@DateTimeFormat(style = "HH:mm")
+	@Column(name = "event_hour")
+	@Temporal(TemporalType.TIME)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
 	private Date eventHour;
 
-//	@ManyToOne
-//	@JoinColumn(name = "appointment_user")
-//	private User user;
-//	
 	
-	@ManyToOne
+//	@DateTimeFormat(style = "HH:mm")
+//	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
+//	private Date eventHour;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private User user;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "event_id")
 	private Event event;
 	
@@ -142,14 +144,14 @@ public class Appointment implements Serializable{
 	}
 
 
-//	public User getUser() {
-//		return user;
-//	}
-//
-//
-//	public void setUser(User user) {
-//		this.user = user;
-//	}
+	public User getUser() {
+		return user;
+	}
+
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 
 	public Event getEvent() {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.informatorio.app.dto.OrganizationDto;
 import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.InvalidPasswordException;
 import com.informatorio.app.service.IOrgService;
 
 @RestController
@@ -85,10 +86,10 @@ public class OrgController {
 
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) throws NotFoundException {
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id, @RequestBody Organization dto) throws NotFoundException, InvalidPasswordException {
 
-		orgService.delete(id);
+		orgService.delete(id, dto);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 

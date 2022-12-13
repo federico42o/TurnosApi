@@ -15,6 +15,7 @@ public class EventWrapper {
 		entity.setLocation(dto.getLocation());
 		entity.setIsUnique(dto.getIsUnique());
 		entity.setEventDate(dto.getEventDate());
+		entity.setEventHour(dto.getEventHour());
 		
 
 		return entity;
@@ -30,7 +31,7 @@ public class EventWrapper {
 		dto.setIsUnique(entity.getIsUnique());
 		dto.setEventDate(entity.getEventDate());
 		dto.setOrganizationId(entity.getOrganization().getId());
-		
+		dto.setEventHour(entity.getEventHour());
 
 		return dto;
 
@@ -44,7 +45,7 @@ public class EventWrapper {
 		response.setLocation(dto.getLocation());
 		response.setEventDate(dto.getEventDate());
 		response.setOrganizationId(dto.getOrganizationId());
-		
+		response.setEventHour(dto.getEventHour());
 
 		return response;
 

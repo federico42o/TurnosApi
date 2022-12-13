@@ -2,6 +2,8 @@ package com.informatorio.app.dto.response;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 
@@ -13,7 +15,9 @@ public class EventResponseDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date eventDate;
 	
-
+	@DateTimeFormat(style = "hh:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "hh:mm",timezone = "America/Argentina/Buenos_Aires")
+	private Date eventHour;
 	private Long organizationId;
 
 	public EventResponseDto() {
@@ -50,6 +54,14 @@ public class EventResponseDto {
 
 	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
+	}
+
+	public Date getEventHour() {
+		return eventHour;
+	}
+
+	public void setEventHour(Date eventHour) {
+		this.eventHour = eventHour;
 	}
 
 	

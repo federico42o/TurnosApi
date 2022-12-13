@@ -7,6 +7,7 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import com.informatorio.app.dto.OrganizationDto;
 import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
+import com.informatorio.app.exception.InvalidPasswordException;
 
 public interface IOrgService {
 
@@ -22,5 +23,5 @@ public interface IOrgService {
 
 	Organization findById(Long id) throws NotFoundException;
 	OrganizationDto updateOrg(Long id, OrganizationDto orgDto) throws NotFoundException, AlreadyExistException;
-	void delete(Long id) throws NotFoundException;
+	void delete(Long id, Organization dto) throws NotFoundException, InvalidPasswordException;
 }

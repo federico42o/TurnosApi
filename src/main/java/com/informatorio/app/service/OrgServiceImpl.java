@@ -1,18 +1,16 @@
 package com.informatorio.app.service;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.informatorio.app.dto.OrganizationDto;
-import com.informatorio.app.dto.request.EventDto;
-import com.informatorio.app.entity.Event;
 import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
 import com.informatorio.app.exception.InvalidPasswordException;
@@ -127,15 +125,19 @@ public class OrgServiceImpl implements IOrgService {
 		
 		
 	}
+	
 
 	@Override
-	public void delete(Long id) throws NotFoundException {
-		if (orgDao.findById(id).isEmpty()) {
-			throw new NotFoundException();
-		}
-			
-			orgDao.deleteById(id);
+	public void delete(Long id,Organization request) throws NotFoundException, InvalidPasswordException {
+		if (orgDao.findById(id).isEmpty())throw new NotFoundException();
+		
+		Organization org = orgDao.findById(id).orElse(null);
+
+		if (!org.getPassword().equals(request.getPassword()))throw new InvalidPasswordException("Invalid password");
+		
+		orgDao.deleteById(id);
 	}
+
 
 
 }

@@ -54,7 +54,12 @@ public class Event implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date eventDate;
-
+	
+	@Column(name = "event_hour")
+	@Temporal(TemporalType.TIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm",timezone = "America/Argentina/Buenos_Aires")
+	private Date eventHour;
+	
 	@Column(name = "is_unique")
 	private Boolean isUnique;
 
@@ -65,7 +70,7 @@ public class Event implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<Appointment> appointments;
+	private List<Appointment> appointments =  new ArrayList<>();
 
 	@PrePersist
 	public void prePersist() {
@@ -133,6 +138,16 @@ public class Event implements Serializable {
 
 	public void setEventDate(Date eventDate) {
 		this.eventDate = eventDate;
+	}
+	
+	
+	
+	public Date getEventHour() {
+		return eventHour;
+	}
+
+	public void setEventHour(Date eventHour) {
+		this.eventHour = eventHour;
 	}
 
 	public Date getCreatedAt() {

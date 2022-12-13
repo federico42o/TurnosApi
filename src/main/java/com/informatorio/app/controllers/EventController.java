@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.informatorio.app.dto.request.EventDto;
 import com.informatorio.app.dto.response.EventResponseDto;
 import com.informatorio.app.entity.Event;
+import com.informatorio.app.entity.Organization;
 import com.informatorio.app.exception.AlreadyExistException;
 import com.informatorio.app.exception.BadRequestException;
 import com.informatorio.app.exception.InvalidPasswordException;
@@ -41,7 +42,7 @@ public class EventController {
 	}
 
 	@PostMapping("/new")
-	public ResponseEntity<HashMap<String, Object>> createEvent(@RequestBody @Valid EventDto eventDto)
+	public ResponseEntity<?> createEvent(@RequestBody @Valid EventDto eventDto)
 			throws AlreadyExistException, InvalidPasswordException, NotFoundException, BadRequestException {
 
 		HashMap<String, Object> response = new HashMap<>();
@@ -50,16 +51,16 @@ public class EventController {
 
 		response.put("event", newEvent);
 
-		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
-
+		//return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
+		return ResponseEntity.created(null).body(response);
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
+	@DeleteMapping("/delete/{id}")
+	public void deleteEvent(@PathVariable Long id, @RequestBody Organization org) throws NotFoundException, InvalidPasswordException {
 
-		eventService.delete(id);
+		eventService.delete(id, org);
 
-		return new ResponseEntity<>(HttpStatus.OK);
+
 
 	};
 
