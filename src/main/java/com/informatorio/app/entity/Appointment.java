@@ -20,6 +20,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.informatorio.app.utils.CheckDate;
 import com.informatorio.app.utils.RandomStringGenerator;
 
@@ -68,7 +70,15 @@ public class Appointment implements Serializable{
 	
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "event_id")
+	@JsonIgnore
 	private Event event;
+	
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "organization_id")
+	@JsonIgnore
+	private Organization organization;
+	
+	
 	
 	@PrePersist
 	public void prePersist() {
@@ -162,10 +172,20 @@ public class Appointment implements Serializable{
 	public void setEvent(Event event) {
 		this.event = event;
 	}
+
+
+	public Organization getOrganization() {
+		return organization;
+	}
+
+
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
+	}
 	
 
 
-
+	
 
 
 	

@@ -1,5 +1,4 @@
-package com.informatorio.app.service;
-
+package com.informatorio.app.service.impl;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +15,7 @@ import com.informatorio.app.exception.AlreadyExistException;
 import com.informatorio.app.exception.InvalidPasswordException;
 import com.informatorio.app.repository.IEventDao;
 import com.informatorio.app.repository.IOrgDao;
+import com.informatorio.app.service.IOrgService;
 import com.informatorio.app.wrapper.EventWrapper;
 import com.informatorio.app.wrapper.OrganizationWrapper;
 
@@ -30,26 +30,22 @@ public class OrgServiceImpl implements IOrgService {
 	@Override
 	public List<OrganizationDto> findByIsActiveTrue() {
 		List<Organization> org = orgDao.findByIsActiveTrue();
-		
-		List<OrganizationDto> orgDto = org.stream()
-				.map(x -> OrganizationWrapper.entityToDto(x))
+
+		List<OrganizationDto> orgDto = org.stream().map(x -> OrganizationWrapper.entityToDto(x))
 				.collect(Collectors.toList());
-		
-		
+
 		return orgDto;
 	}
 
 	@Override
 	public List<Organization> findByAll() {
 		List<Organization> org = orgDao.findAll();
-		
+
 //		List<OrganizationDto> orgDto = org.stream()
 //				.map(x -> OrganizationWrapper.entityToDto(x))
 //				.collect(Collectors.toList());
-		
-		
-		return org;
 
+		return org;
 
 	}
 
@@ -60,9 +56,8 @@ public class OrgServiceImpl implements IOrgService {
 		}
 		Organization org = OrganizationWrapper.dtoToEntity(orgDto);
 
-		 
 		return OrganizationWrapper.entityToDto(orgDao.save(org));
-	}	
+	}
 
 	@Override
 	public OrganizationDto findByCuit(String cuit) throws NotFoundException {
@@ -83,9 +78,6 @@ public class OrgServiceImpl implements IOrgService {
 
 		return OrganizationWrapper.entityToDto(org);
 	}
-	
-	
-
 
 	@Override
 	public Organization findById(Long id) throws NotFoundException {
@@ -93,51 +85,51 @@ public class OrgServiceImpl implements IOrgService {
 		if (orgDao.findById(id).isEmpty()) {
 			throw new NotFoundException();
 		}
-			
+
 		return orgDao.findById(id).orElse(null);
 
 	}
-	
+
 	@Override
-	public OrganizationDto updateOrg(Long id, OrganizationDto orgDto) throws NotFoundException, AlreadyExistException {
-		
+	public OrganizationDto updateOrg(Long id, OrganizationDto orgDto)
+			throws NotFoundException, AlreadyExistException, InvalidPasswordException {
+
 		if (orgDao.findByMailAndId(orgDto.getMail(), id) == null) {
 			throw new AlreadyExistException("This email belongs to another Organization");
-		} 
-		
-		Organization org = orgDao.findById(id).orElse(null);	
-		
-		if(org == null) {
+		}
+
+		Organization org = orgDao.findById(id).orElse(null);
+
+		if (org == null) {
 			throw new NotFoundException();
 		}
-		
-		org.setAddress(orgDto.getAddress());
-		org.setName(orgDto.getName());
-		org.setMail(orgDto.getMail());
-		org.setPhone(orgDto.getPhone());
-		
-		if (orgDto.getPassword() != null) {
-			
-			org.setPassword(orgDto.getPassword());
+
+		if (!org.getPassword().equals(orgDto.getPassword())) {
+			throw new InvalidPasswordException("Invalid password");
+
+		} else {
+			org.setAddress(orgDto.getAddress());
+			org.setName(orgDto.getName());
+			org.setMail(orgDto.getMail());
+			org.setPhone(orgDto.getPhone());
+
 		}
 
 		return OrganizationWrapper.entityToDto(orgDao.save(org));
-		
-		
+
 	}
-	
 
 	@Override
-	public void delete(Long id,Organization request) throws NotFoundException, InvalidPasswordException {
-		if (orgDao.findById(id).isEmpty())throw new NotFoundException();
-		
+	public void delete(Long id, Organization request) throws NotFoundException, InvalidPasswordException {
+		if (orgDao.findById(id).isEmpty())
+			throw new NotFoundException();
+
 		Organization org = orgDao.findById(id).orElse(null);
 
-		if (!org.getPassword().equals(request.getPassword()))throw new InvalidPasswordException("Invalid password");
-		
+		if (!org.getPassword().equals(request.getPassword()))
+			throw new InvalidPasswordException("Invalid password");
+
 		orgDao.deleteById(id);
 	}
-
-
 
 }

@@ -42,7 +42,7 @@ public class User implements Serializable{
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user", cascade = CascadeType.ALL)
 	@JsonIgnore
-	private List<Appointment> appointments =  new ArrayList<>();
+	private List<Appointment> appointments;
 	
 	@PrePersist
 	public void prePersist(){

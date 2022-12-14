@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.informatorio.app.dto.OrganizationDto;
 import com.informatorio.app.dto.UserDto;
 import com.informatorio.app.dto.request.EventDto;
 import com.informatorio.app.dto.response.EventResponseDto;
@@ -35,7 +38,7 @@ public class UserController {
 	IUserService userService;
 	
 	
-	@GetMapping
+	@GetMapping("/all")
 	public ResponseEntity<HashMap<String, Object>> all() {
 		HashMap<String, Object> response = new HashMap<>();
 		List<User> all = userService.findByAll();
@@ -43,6 +46,25 @@ public class UserController {
 		response.put("usuarios", all);
 
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+
+	}
+	
+	@GetMapping
+	public ResponseEntity<?> findByDni(@RequestParam String dni)
+			throws NotFoundException {
+
+		User user = userService.findByDni(dni);
+
+		return ResponseEntity.ok().body(user);
+
+	}
+	@GetMapping("/lastname")
+	public ResponseEntity<?> findByLastname(@RequestParam String lastname)
+			throws NotFoundException {
+
+		List<User> users = userService.findByLastName(lastname);
+
+		return ResponseEntity.ok().body(users);
 
 	}
 
@@ -54,9 +76,18 @@ public class UserController {
 
 		User newUser = userService.create(userDto);
 
-		response.put("event", newUser);
+		response.put("user", newUser);
 
 		return new ResponseEntity<HashMap<String, Object>>(response, HttpStatus.CREATED);
+
+	}
+	@PutMapping("edit/{id}")
+	public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserDto userDto)
+			throws NotFoundException, AlreadyExistException, InvalidPasswordException {
+
+		User updateUser = userService.update(id, userDto);
+
+		return ResponseEntity.ok().body(updateUser);
 
 	}
 
@@ -64,7 +95,6 @@ public class UserController {
 	public void deleteUser(@PathVariable Long id) throws NotFoundException{
 
 		userService.delete(id);
-
 
 	};
 

@@ -78,7 +78,7 @@ public class OrgController {
 
 	@PutMapping("edit/{id}")
 	public ResponseEntity<OrganizationDto> updateOrg(@PathVariable Long id, @RequestBody @Valid OrganizationDto orgDto)
-			throws NotFoundException, AlreadyExistException {
+			throws NotFoundException, AlreadyExistException, InvalidPasswordException {
 
 		OrganizationDto updateOrg = orgService.updateOrg(id, orgDto);
 

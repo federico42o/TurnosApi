@@ -70,7 +70,7 @@ public class Event implements Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<Appointment> appointments =  new ArrayList<>();
+	private List<Appointment> appointments;
 
 	@PrePersist
 	public void prePersist() {

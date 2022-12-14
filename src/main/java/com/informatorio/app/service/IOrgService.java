@@ -22,6 +22,6 @@ public interface IOrgService {
 	OrganizationDto create(OrganizationDto org) throws AlreadyExistException;
 
 	Organization findById(Long id) throws NotFoundException;
-	OrganizationDto updateOrg(Long id, OrganizationDto orgDto) throws NotFoundException, AlreadyExistException;
+	OrganizationDto updateOrg(Long id, OrganizationDto orgDto) throws NotFoundException, AlreadyExistException, InvalidPasswordException;
 	void delete(Long id, Organization dto) throws NotFoundException, InvalidPasswordException;
 }

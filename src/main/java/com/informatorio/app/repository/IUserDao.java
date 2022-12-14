@@ -16,7 +16,9 @@ public interface IUserDao extends JpaRepository<User, Long>{
 	@Query(value="SELECT * 	from users u WHERE u.name = ?1 and u.last_name = ?2 and u.dni = ?3", nativeQuery = true)
 	User findByNameByLastNameByDni(String name,String lastname, String dni);
 	
-	@Query("SELECT u FROM users u WHERE u.dni = ?1 and u.id = ?2")
-	User findByDniAndId(String mail, Long id);
+	@Query(value="SELECT * FROM users u WHERE u.dni = ?1 and u.id = ?2",nativeQuery = true)
+	User findByDniAndId(String dni, Long id);
 	User findByDni(String dni);
+
+	List<User> findByLastName(String lastName);
 }

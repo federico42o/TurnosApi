@@ -1,7 +1,10 @@
 package com.informatorio.app.dto.request;
 
 import java.util.Date;
+
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -9,8 +12,14 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class EventDto {
 
+	
+	@NotBlank(message = "The NAME is required")
+	@Size(min = 2,max = 20)
 	private String name;
+	@NotBlank(message = "The LOCATION is required")
+	@Size(min = 2,max = 20)
 	private String location;
+	@NotBlank(message = "This field is required (true/false)")
 	private Boolean isUnique;
 
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -23,7 +32,9 @@ public class EventDto {
 	
 	@NotBlank(message = "The password is required")
 	private String password;
-
+	
+	@NotBlank(message = "The OrganizationID is required")
+	
 	private Long organizationId;
 
 	public EventDto() {

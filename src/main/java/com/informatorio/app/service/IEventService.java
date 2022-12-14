@@ -20,6 +20,7 @@ public interface IEventService {
 
 	void delete(Long id, Organization org) throws NotFoundException, InvalidPasswordException;
 
+	List<Event> findByOrgId(Long id);
 	
-
+	Event findByOrgAndByName(Long id, String name);
 }

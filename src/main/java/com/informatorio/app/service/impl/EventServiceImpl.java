@@ -1,5 +1,7 @@
-package com.informatorio.app.service;
+package com.informatorio.app.service.impl;
 
+
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -16,6 +18,7 @@ import com.informatorio.app.exception.BadRequestException;
 import com.informatorio.app.exception.InvalidPasswordException;
 import com.informatorio.app.repository.IEventDao;
 import com.informatorio.app.repository.IOrgDao;
+import com.informatorio.app.service.IEventService;
 import com.informatorio.app.utils.CheckDate;
 import com.informatorio.app.wrapper.EventWrapper;
 
@@ -34,6 +37,9 @@ public class EventServiceImpl implements IEventService {
 			throws AlreadyExistException, InvalidPasswordException, BadRequestException {
 
 		Organization org = orgDao.findById(eventDto.getOrganizationId()).orElse(new Organization());
+		if (eventDto != null && !CheckDate.check(eventDto.getEventDate())) {
+			throw new BadRequestException("it's not possible to create an event if the date has passed");
+		}
 		
 		if (eventDto.getIsUnique() && eventDto.getEventHour() == null && eventDto.getEventDate() == null) {
 			throw new BadRequestException("A unique event must have an hour and a date");
@@ -73,6 +79,21 @@ public class EventServiceImpl implements IEventService {
 
 		eventDao.deleteById(id);
 
+	}
+
+	@Override
+	public Event findByOrgAndByName(Long id,String name) {
+		// TODO Auto-generated method stub
+		
+		
+		
+		return eventDao.findByOrgAndByName(id, name);
+	}
+
+	@Override
+	public List<Event> findByOrgId(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

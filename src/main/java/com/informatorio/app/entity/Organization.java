@@ -63,7 +63,12 @@ public class Organization implements Serializable{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private Set<Event> events;
-
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "organization", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonIgnore
+	private Set<Appointment> appointments;
+	
+	
 	@PrePersist
 	public void prePersist(){
 		String pw = RandomStringGenerator.generate();

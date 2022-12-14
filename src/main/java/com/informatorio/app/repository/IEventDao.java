@@ -29,6 +29,13 @@ public interface IEventDao extends JpaRepository<Event, Long>{
 
 	EventDto save(EventDto entityToDto);
 
+	@Query(value="SELECT * FROM events u WHERE u.organization_id = ?1 and u.name = ?2", nativeQuery = true)
+	Event findByOrgAndByName(Long id,String name);
+
+	@Query(value="SELECT * FROM events u WHERE u.organization_id = ?1", nativeQuery = true)
+	List<Event> findByOrganizationId(Long id);
+	
+	
 	
 	
 

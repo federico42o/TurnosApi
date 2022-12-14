@@ -11,6 +11,7 @@ public class UserWrapper {
 		User entity = new User();
 		entity.setName(dto.getName());
 		entity.setLastName(dto.getLastName());
+		entity.setDni(dto.getDni());
 		return entity;
 		
 	}
@@ -24,7 +25,7 @@ public class UserWrapper {
 		
 		dto.setName(entity.getName());
 		dto.setLastName(entity.getLastName());
-		
+		dto.setDni(entity.getDni());
 		return dto;
 		
 		
