@@ -25,13 +25,14 @@ public class OrgController {
 	private IOrgService orgService;
 
 	@GetMapping
-	public ResponseEntity<HashMap<String, Object>> all() {
+	public ResponseEntity<List<Organization>> all() {
 		HashMap<String, Object> response = new HashMap<>();
 		List<Organization> all = orgService.findByAll();
 
 		response.put("organizaciones", all);
 
-		return new  ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		//return new  ResponseEntity<HashMap<String, Object>>(response, HttpStatus.OK);
+		return ResponseEntity.ok().body(all);
 
 	}
 
